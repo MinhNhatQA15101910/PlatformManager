@@ -12,6 +12,7 @@ public static class ApplicationServiceExtensions
         {
             opt.UseInMemoryDatabase("PlatformDB");
         });
+        services.AddScoped<IPlatformRepository, PlatformRepository>();
 
         return services;
     }
