@@ -13,6 +13,7 @@ public static class ApplicationServiceExtensions
             opt.UseInMemoryDatabase("PlatformDB");
         });
         services.AddScoped<IPlatformRepository, PlatformRepository>();
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         return services;
     }
