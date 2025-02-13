@@ -9,18 +9,18 @@ public class PlatformRepository(DataContext context) : IPlatformRepository
         context.Platforms.Add(platform);
     }
 
-    public async Task<IEnumerable<Platform>> GetAllPlatformsAsync()
+    public IEnumerable<Platform> GetAllPlatforms()
     {
-        return await context.Platforms.ToListAsync();
+        return [.. context.Platforms];
     }
 
-    public async Task<Platform?> GetPlatformByIdAsync(int id)
+    public Platform? GetPlatformById(int id)
     {
-        return await context.Platforms.FindAsync(id);
+        return context.Platforms.Find(id);
     }
 
-    public async Task<bool> SaveChangesAsync()
+    public bool SaveChanges()
     {
-        return await context.SaveChangesAsync() > 0;
+        return context.SaveChanges() > 0;
     }
 }

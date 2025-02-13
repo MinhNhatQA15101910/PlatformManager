@@ -12,16 +12,16 @@ public class PlatformsController
 ) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PlatformReadDto>>> GetPlatforms()
+    public ActionResult<IEnumerable<PlatformReadDto>> GetPlatforms()
     {
-        var platforms = await platformRepository.GetAllPlatformsAsync();
+        var platforms = platformRepository.GetAllPlatforms();
         return Ok(mapper.Map<IEnumerable<PlatformReadDto>>(platforms));
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<PlatformReadDto>> GetPlatformById(int id)
+    public ActionResult<PlatformReadDto> GetPlatformById(int id)
     {
-        var platform = await platformRepository.GetPlatformByIdAsync(id);
+        var platform = platformRepository.GetPlatformById(id);
         if (platform == null)
         {
             return NotFound();
@@ -31,13 +31,13 @@ public class PlatformsController
     }
 
     [HttpPost]
-    public async Task<ActionResult<PlatformReadDto>> CreatePlatform(PlatformCreateDto platformCreateDto)
+    public ActionResult<PlatformReadDto> CreatePlatform(PlatformCreateDto platformCreateDto)
     {
         var platform = mapper.Map<Platform>(platformCreateDto);
 
         platformRepository.CreatePlatform(platform);
 
-        if (!await platformRepository.SaveChangesAsync())
+        if (!platformRepository.SaveChanges())
         {
             return BadRequest("Failed to create the platform");
         }

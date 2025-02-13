@@ -5,7 +5,7 @@ namespace PlatformService.Data;
 public interface IPlatformRepository
 {
     void CreatePlatform(Platform platform);
-    Task<IEnumerable<Platform>> GetAllPlatformsAsync();
-    Task<Platform?> GetPlatformByIdAsync(int id);
-    Task<bool> SaveChangesAsync();
+    IEnumerable<Platform> GetAllPlatforms();
+    Platform? GetPlatformById(int id);
+    bool SaveChanges();
 }

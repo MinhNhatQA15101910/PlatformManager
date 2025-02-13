@@ -1,4 +1,5 @@
 using PlatformService.Data;
+using PlatformService.SyncDataServices.Http;
 
 namespace PlatformService.Extensions;
 
@@ -13,6 +14,7 @@ public static class ApplicationServiceExtensions
             opt.UseInMemoryDatabase("PlatformDB");
         });
         services.AddScoped<IPlatformRepository, PlatformRepository>();
+        services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         return services;
