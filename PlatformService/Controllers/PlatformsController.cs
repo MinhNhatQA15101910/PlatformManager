@@ -1,14 +1,16 @@
 using PlatformService.Data;
 using PlatformService.DTOs;
 using PlatformService.Entities;
+using PlatformService.SyncDataServices.Http;
 
 namespace PlatformService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PlatformsController
-    (IPlatformRepository platformRepository,
-    IMapper mapper
+public class PlatformsController(
+    IPlatformRepository platformRepository,
+    IMapper mapper,
+    ICommandDataClient commandDataClient
 ) : ControllerBase
 {
     [HttpGet]
@@ -31,7 +33,7 @@ public class PlatformsController
     }
 
     [HttpPost]
-    public ActionResult<PlatformReadDto> CreatePlatform(PlatformCreateDto platformCreateDto)
+    public async Task<ActionResult<PlatformReadDto>> CreatePlatform(PlatformCreateDto platformCreateDto)
     {
         var platform = mapper.Map<Platform>(platformCreateDto);
 
@@ -42,10 +44,21 @@ public class PlatformsController
             return BadRequest("Failed to create the platform");
         }
 
+        var platformReadDto = mapper.Map<PlatformReadDto>(platform);
+
+        try
+        {
+            await commandDataClient.SendPlatformToCommand(platformReadDto);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"--> Could not send synchronously: {ex.Message}");
+        }
+
         return CreatedAtAction(
             nameof(GetPlatformById),
             new { id = platform.Id },
-            mapper.Map<PlatformReadDto>(platform)
+            platformReadDto
         );
     }
 }
