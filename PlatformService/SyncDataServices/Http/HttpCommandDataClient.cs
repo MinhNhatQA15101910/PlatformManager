@@ -16,7 +16,7 @@ public class HttpCommandDataClient(
         );
 
         var response = await httpClient.PostAsync(
-            $"{configuration["CommandService"]}/api/c/platforms", 
+            configuration["CommandService"],
             httpContent
         );
 

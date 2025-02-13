@@ -17,7 +17,7 @@ spec:
           image: donhat1019/platformservice:latest
 ---
 apiVersion: v1
-bind: Service
+kind: Service
 metadata:
   name: platforms-clusterip-srv
 spec:
